@@ -10,8 +10,11 @@ Flight::route('POST /api/auth/login',   [AuthController::class, 'login']);
 Flight::route('GET /api/public/productos',  [PublicController::class, 'productos']);
 Flight::route('GET /api/public/marcas',     [PublicController::class, 'marcas']);
 Flight::route('GET /api/public/etiquetas',  [PublicController::class, 'etiquetas']);
+Flight::route('GET /api/public/categorias', [PublicController::class, 'categorias']);
 Flight::route('GET /api/public/parametros', [PublicController::class, 'parametros']);
-Flight::route('GET /api/public/banners',    [PublicController::class, 'banners']);
+Flight::route('GET /api/public/banners',              [PublicController::class, 'banners']);
+Flight::route('GET /api/public/productos/destacados', [PublicController::class, 'productosDestacados']);
+Flight::route('GET /api/public/productos/ofertas',    [PublicController::class, 'productosOfertas']);
 
 // ──────────────────────────────────────────
 // Rutas protegidas (requieren JWT)
@@ -30,6 +33,13 @@ Flight::group('/api', function () {
     Flight::route('DELETE /marcas/@id:[0-9]+',            [MarcaController::class, 'destroy']);
     Flight::route('POST /marcas/@id:[0-9]+/imagen',       [MarcaController::class, 'uploadImagen']);
     Flight::route('DELETE /marcas/@id:[0-9]+/imagen',     [MarcaController::class, 'destroyImagen']);
+
+    // Categorías
+    Flight::route('GET /categorias',               [CategoriaController::class, 'index']);
+    Flight::route('GET /categorias/@id:[0-9]+',    [CategoriaController::class, 'show']);
+    Flight::route('POST /categorias',              [CategoriaController::class, 'store']);
+    Flight::route('PUT /categorias/@id:[0-9]+',    [CategoriaController::class, 'update']);
+    Flight::route('DELETE /categorias/@id:[0-9]+', [CategoriaController::class, 'destroy']);
 
     // Etiquetas
     Flight::route('GET /etiquetas',              [EtiquetaController::class, 'index']);

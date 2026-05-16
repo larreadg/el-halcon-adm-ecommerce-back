@@ -8,7 +8,7 @@ CREATE TABLE usuario (
     creado_el TEXT NOT NULL DEFAULT CURRENT_TIMESTAMP
 );
 
-CREATE TABLE producto_marca (
+CREATE TABLE marca (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
 
     nombre TEXT NOT NULL UNIQUE,
@@ -39,16 +39,34 @@ CREATE TABLE etiqueta (
     FOREIGN KEY (modificado_por) REFERENCES usuario(id)
 );
 
+CREATE TABLE categoria (
+    id        INTEGER PRIMARY KEY AUTOINCREMENT,
+
+    nombre    TEXT NOT NULL UNIQUE,
+    padre_id  INTEGER,
+
+    creado_por     INTEGER,
+    modificado_por INTEGER,
+
+    creado_el     TEXT NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    modificado_el TEXT,
+
+    FOREIGN KEY (padre_id)       REFERENCES categoria(id),
+    FOREIGN KEY (creado_por)     REFERENCES usuario(id),
+    FOREIGN KEY (modificado_por) REFERENCES usuario(id)
+);
+
 CREATE TABLE producto (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
 
-    nombre   TEXT NOT NULL,
-    codigo   TEXT,
+    nombre      TEXT NOT NULL,
+    codigo      TEXT,
     descripcion TEXT,
 
     precio REAL NOT NULL,
 
-    marca_id INTEGER NOT NULL,
+    marca_id     INTEGER NOT NULL,
+    categoria_id INTEGER NOT NULL,
 
     creado_por INTEGER,
     modificado_por INTEGER,
@@ -56,13 +74,14 @@ CREATE TABLE producto (
     creado_el TEXT NOT NULL DEFAULT CURRENT_TIMESTAMP,
     modificado_el TEXT,
 
-    FOREIGN KEY (marca_id) REFERENCES producto_marca(id),
+    FOREIGN KEY (marca_id)       REFERENCES marca(id),
+    FOREIGN KEY (categoria_id)   REFERENCES categoria(id),
 
-    FOREIGN KEY (creado_por) REFERENCES usuario(id),
+    FOREIGN KEY (creado_por)     REFERENCES usuario(id),
     FOREIGN KEY (modificado_por) REFERENCES usuario(id)
 );
 
-CREATE INDEX idx_producto_marca  ON producto(marca_id);
+CREATE INDEX idx_marca  ON producto(marca_id);
 CREATE INDEX idx_producto_nombre ON producto(nombre);
 
 CREATE TABLE producto_etiqueta (
@@ -106,9 +125,10 @@ CREATE TABLE descuento (
     fecha_desde TEXT NOT NULL,
     fecha_hasta TEXT NOT NULL,
 
-    producto_id INTEGER,
-    etiqueta_id INTEGER,
-    marca_id    INTEGER,
+    producto_id  INTEGER,
+    etiqueta_id  INTEGER,
+    marca_id     INTEGER,
+    categoria_id INTEGER,
 
     creado_por     INTEGER,
     modificado_por INTEGER,
@@ -117,12 +137,13 @@ CREATE TABLE descuento (
     modificado_el TEXT,
 
     CHECK (
-        (producto_id IS NOT NULL) + (etiqueta_id IS NOT NULL) + (marca_id IS NOT NULL) = 1
+        (producto_id IS NOT NULL) + (etiqueta_id IS NOT NULL) + (marca_id IS NOT NULL) + (categoria_id IS NOT NULL) = 1
     ),
 
-    FOREIGN KEY (producto_id) REFERENCES producto(id)      ON DELETE CASCADE,
-    FOREIGN KEY (etiqueta_id) REFERENCES etiqueta(id)      ON DELETE CASCADE,
-    FOREIGN KEY (marca_id)    REFERENCES producto_marca(id) ON DELETE CASCADE,
+    FOREIGN KEY (producto_id)  REFERENCES producto(id)           ON DELETE CASCADE,
+    FOREIGN KEY (etiqueta_id)  REFERENCES etiqueta(id)           ON DELETE CASCADE,
+    FOREIGN KEY (marca_id)     REFERENCES marca(id)     ON DELETE CASCADE,
+    FOREIGN KEY (categoria_id) REFERENCES categoria(id) ON DELETE CASCADE,
     FOREIGN KEY (creado_por)     REFERENCES usuario(id),
     FOREIGN KEY (modificado_por) REFERENCES usuario(id)
 );

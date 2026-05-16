@@ -21,7 +21,8 @@ class ProductoController
             'descripcion' => ($req->query['descripcion'] ?? '') ?: null,
             'precio_min'  => isset($req->query['precio_min'])  && $req->query['precio_min']  !== '' ? (float) $req->query['precio_min']  : null,
             'precio_max'  => isset($req->query['precio_max'])  && $req->query['precio_max']  !== '' ? (float) $req->query['precio_max']  : null,
-            'marca_id'    => isset($req->query['marca_id'])     && $req->query['marca_id']     !== '' ? (int)   $req->query['marca_id']    : null,
+            'marca_id'    => isset($req->query['marca_id'])     && $req->query['marca_id']     !== '' ? (int)   $req->query['marca_id']     : null,
+            'categoria_id' => isset($req->query['categoria_id']) && $req->query['categoria_id'] !== '' ? (int)   $req->query['categoria_id']  : null,
             'etiquetas'   => $etiquetas,
         ];
 
@@ -65,7 +66,7 @@ class ProductoController
             ApiResponse::success('Producto creado correctamente', $producto, 201)->send();
         } catch (PDOException $e) {
             if (str_contains($e->getMessage(), 'FOREIGN KEY')) {
-                ApiResponse::error('marca_id o etiqueta_id no existe', 422)->send();
+                ApiResponse::error('marca_id, categoria_id o etiqueta_id no existe', 422)->send();
                 return;
             }
             ApiResponse::error('Error interno del servidor', 500)->send();
@@ -100,7 +101,7 @@ class ProductoController
             ApiResponse::success('Producto actualizado correctamente', $producto)->send();
         } catch (PDOException $e) {
             if (str_contains($e->getMessage(), 'FOREIGN KEY')) {
-                ApiResponse::error('marca_id o etiqueta_id no existe', 422)->send();
+                ApiResponse::error('marca_id, categoria_id o etiqueta_id no existe', 422)->send();
                 return;
             }
             ApiResponse::error('Error interno del servidor', 500)->send();
@@ -195,6 +196,9 @@ class ProductoController
         if (empty($body['marca_id']) || !is_int($body['marca_id'])) {
             return 'El marca_id es requerido y debe ser un entero';
         }
+        if (empty($body['categoria_id']) || !is_int($body['categoria_id'])) {
+            return 'El categoria_id es requerido y debe ser un entero';
+        }
 
         return null;
     }
@@ -219,6 +223,9 @@ class ProductoController
 
             if (isset($data['marca_id'])) {
                 $data['marca_id'] = (int) $data['marca_id'];
+            }
+            if (isset($data['categoria_id'])) {
+                $data['categoria_id'] = (int) $data['categoria_id'];
             }
             if (isset($data['etiquetas']) && is_array($data['etiquetas'])) {
                 $data['etiquetas'] = array_map('intval', $data['etiquetas']);

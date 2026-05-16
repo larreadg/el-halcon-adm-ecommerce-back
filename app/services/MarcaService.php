@@ -13,13 +13,13 @@ class MarcaService
 
     public function findAll(): array
     {
-        $stmt = $this->db->query('SELECT * FROM producto_marca ORDER BY nombre');
+        $stmt = $this->db->query('SELECT * FROM marca ORDER BY nombre');
         return $stmt->fetchAll();
     }
 
     public function findById(int $id): ?array
     {
-        $stmt = $this->db->prepare('SELECT * FROM producto_marca WHERE id = ?');
+        $stmt = $this->db->prepare('SELECT * FROM marca WHERE id = ?');
         $stmt->execute([$id]);
         $row = $stmt->fetch();
 
@@ -29,7 +29,7 @@ class MarcaService
     public function create(string $nombre, int $userId, ?string $imagen = null): array
     {
         $stmt = $this->db->prepare(
-            'INSERT INTO producto_marca (nombre, imagen, creado_por, creado_el) VALUES (?, ?, ?, ?)'
+            'INSERT INTO marca (nombre, imagen, creado_por, creado_el) VALUES (?, ?, ?, ?)'
         );
         $stmt->execute([$nombre, $imagen, $userId, $this->now()]);
 
@@ -46,14 +46,14 @@ class MarcaService
 
         if ($replaceImagen) {
             $stmt = $this->db->prepare(
-                'UPDATE producto_marca
+                'UPDATE marca
                  SET nombre = ?, imagen = ?, modificado_por = ?, modificado_el = ?
                  WHERE id = ?'
             );
             $stmt->execute([$nombre, $imagen, $userId, $ahora, $id]);
         } else {
             $stmt = $this->db->prepare(
-                'UPDATE producto_marca
+                'UPDATE marca
                  SET nombre = ?, modificado_por = ?, modificado_el = ?
                  WHERE id = ?'
             );
@@ -66,7 +66,7 @@ class MarcaService
     public function updateImagen(int $id, string $path, int $userId): ?array
     {
         $stmt = $this->db->prepare(
-            'UPDATE producto_marca
+            'UPDATE marca
              SET imagen = ?, modificado_por = ?, modificado_el = ?
              WHERE id = ?'
         );
@@ -82,7 +82,7 @@ class MarcaService
         }
 
         $stmt = $this->db->prepare(
-            'UPDATE producto_marca
+            'UPDATE marca
              SET imagen = NULL, modificado_por = ?, modificado_el = ?
              WHERE id = ?'
         );
@@ -93,7 +93,7 @@ class MarcaService
 
     public function delete(int $id): bool
     {
-        $stmt = $this->db->prepare('DELETE FROM producto_marca WHERE id = ?');
+        $stmt = $this->db->prepare('DELETE FROM marca WHERE id = ?');
         $stmt->execute([$id]);
 
         return $stmt->rowCount() > 0;

@@ -41,7 +41,7 @@ class DescuentoController
             ApiResponse::success('Descuento creado correctamente', $descuento, 201)->send();
         } catch (PDOException $e) {
             if (str_contains($e->getMessage(), 'CHECK')) {
-                ApiResponse::error('Debe especificarse exactamente un destino (producto, etiqueta o marca)', 422)->send();
+                ApiResponse::error('Debe especificarse exactamente un destino (producto, etiqueta, marca o categoría)', 422)->send();
                 return;
             }
             ApiResponse::error('Error interno del servidor', 500)->send();
@@ -72,7 +72,7 @@ class DescuentoController
             ApiResponse::success('Descuento actualizado correctamente', $descuento)->send();
         } catch (PDOException $e) {
             if (str_contains($e->getMessage(), 'CHECK')) {
-                ApiResponse::error('Debe especificarse exactamente un destino (producto, etiqueta o marca)', 422)->send();
+                ApiResponse::error('Debe especificarse exactamente un destino (producto, etiqueta, marca o categoría)', 422)->send();
                 return;
             }
             ApiResponse::error('Error interno del servidor', 500)->send();
@@ -119,13 +119,14 @@ class DescuentoController
         }
 
         $targets = array_filter([
-            $body['producto_id'] ?? null,
-            $body['etiqueta_id'] ?? null,
-            $body['marca_id']    ?? null,
+            $body['producto_id']  ?? null,
+            $body['etiqueta_id']  ?? null,
+            $body['marca_id']     ?? null,
+            $body['categoria_id'] ?? null,
         ], fn($v) => $v !== null && $v !== '');
 
         if (count($targets) !== 1) {
-            return 'Debe especificarse exactamente un destino (producto, etiqueta o marca)';
+            return 'Debe especificarse exactamente un destino (producto, etiqueta, marca o categoría)';
         }
 
         return null;

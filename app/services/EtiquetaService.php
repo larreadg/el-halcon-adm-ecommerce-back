@@ -4,6 +4,10 @@ declare(strict_types=1);
 
 class EtiquetaService
 {
+    private const NON_DELETABLE_NAMES = [
+        'destacados',
+    ];
+
     private PDO $db;
 
     public function __construct()
@@ -55,6 +59,16 @@ class EtiquetaService
         $stmt = $this->db->prepare('DELETE FROM etiqueta WHERE id = ?');
         $stmt->execute([$id]);
         return $stmt->rowCount() > 0;
+    }
+
+    public function isNonDeletableName(string $nombre): bool
+    {
+        return in_array($this->normalizeName($nombre), self::NON_DELETABLE_NAMES, true);
+    }
+
+    private function normalizeName(string $nombre): string
+    {
+        return mb_strtolower(trim($nombre));
     }
 
     private function now(): string

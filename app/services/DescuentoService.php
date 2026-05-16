@@ -17,11 +17,13 @@ class DescuentoService
             'SELECT d.*,
                     p.nombre AS producto_nombre,
                     e.nombre AS etiqueta_nombre,
-                    m.nombre AS marca_nombre
+                    m.nombre AS marca_nombre,
+                    c.nombre AS categoria_nombre
              FROM descuento d
-             LEFT JOIN producto       p ON p.id = d.producto_id
-             LEFT JOIN etiqueta       e ON e.id = d.etiqueta_id
-             LEFT JOIN producto_marca m ON m.id = d.marca_id
+             LEFT JOIN producto          p ON p.id = d.producto_id
+             LEFT JOIN etiqueta          e ON e.id = d.etiqueta_id
+             LEFT JOIN marca    m ON m.id = d.marca_id
+             LEFT JOIN categoria c ON c.id = d.categoria_id
              ORDER BY d.fecha_desde DESC'
         );
         return $stmt->fetchAll();
@@ -33,11 +35,13 @@ class DescuentoService
             'SELECT d.*,
                     p.nombre AS producto_nombre,
                     e.nombre AS etiqueta_nombre,
-                    m.nombre AS marca_nombre
+                    m.nombre AS marca_nombre,
+                    c.nombre AS categoria_nombre
              FROM descuento d
-             LEFT JOIN producto       p ON p.id = d.producto_id
-             LEFT JOIN etiqueta       e ON e.id = d.etiqueta_id
-             LEFT JOIN producto_marca m ON m.id = d.marca_id
+             LEFT JOIN producto          p ON p.id = d.producto_id
+             LEFT JOIN etiqueta          e ON e.id = d.etiqueta_id
+             LEFT JOIN marca    m ON m.id = d.marca_id
+             LEFT JOIN categoria c ON c.id = d.categoria_id
              WHERE d.id = ?'
         );
         $stmt->execute([$id]);
@@ -50,18 +54,19 @@ class DescuentoService
         $stmt = $this->db->prepare(
             'INSERT INTO descuento
                 (nombre, porcentaje, fecha_desde, fecha_hasta,
-                 producto_id, etiqueta_id, marca_id,
+                 producto_id, etiqueta_id, marca_id, categoria_id,
                  creado_por, creado_el)
-             VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)'
+             VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)'
         );
         $stmt->execute([
             $data['nombre'],
             (float) $data['porcentaje'],
             $data['fecha_desde'],
             $data['fecha_hasta'],
-            isset($data['producto_id']) ? (int) $data['producto_id'] : null,
-            isset($data['etiqueta_id']) ? (int) $data['etiqueta_id'] : null,
-            isset($data['marca_id'])    ? (int) $data['marca_id']    : null,
+            isset($data['producto_id'])  ? (int) $data['producto_id']  : null,
+            isset($data['etiqueta_id'])  ? (int) $data['etiqueta_id']  : null,
+            isset($data['marca_id'])     ? (int) $data['marca_id']     : null,
+            isset($data['categoria_id']) ? (int) $data['categoria_id'] : null,
             $userId,
             $this->now(),
         ]);
@@ -73,7 +78,7 @@ class DescuentoService
         $stmt = $this->db->prepare(
             'UPDATE descuento
              SET nombre = ?, porcentaje = ?, fecha_desde = ?, fecha_hasta = ?,
-                 producto_id = ?, etiqueta_id = ?, marca_id = ?,
+                 producto_id = ?, etiqueta_id = ?, marca_id = ?, categoria_id = ?,
                  modificado_por = ?, modificado_el = ?
              WHERE id = ?'
         );
@@ -82,9 +87,10 @@ class DescuentoService
             (float) $data['porcentaje'],
             $data['fecha_desde'],
             $data['fecha_hasta'],
-            isset($data['producto_id']) ? (int) $data['producto_id'] : null,
-            isset($data['etiqueta_id']) ? (int) $data['etiqueta_id'] : null,
-            isset($data['marca_id'])    ? (int) $data['marca_id']    : null,
+            isset($data['producto_id'])  ? (int) $data['producto_id']  : null,
+            isset($data['etiqueta_id'])  ? (int) $data['etiqueta_id']  : null,
+            isset($data['marca_id'])     ? (int) $data['marca_id']     : null,
+            isset($data['categoria_id']) ? (int) $data['categoria_id'] : null,
             $userId,
             $this->now(),
             $id,

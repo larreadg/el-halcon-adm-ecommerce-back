@@ -39,6 +39,12 @@ class PublicController
         ApiResponse::success('Listado obtenido', $service->findAll())->send();
     }
 
+    public function categorias(): void
+    {
+        $service = new CategoriaService();
+        ApiResponse::success('Listado obtenido', $service->findAll())->send();
+    }
+
     public function parametros(): void
     {
         $service = new ParametroService();
@@ -49,5 +55,17 @@ class PublicController
     {
         $service = new BannerService();
         ApiResponse::success('Banners obtenidos', $service->findAll())->send();
+    }
+
+    public function productosDestacados(): void
+    {
+        $service = new ProductoService();
+        ApiResponse::success('Productos destacados', $service->findDestacados())->send();
+    }
+
+    public function productosOfertas(): void
+    {
+        $service = new ProductoService();
+        ApiResponse::success('Ofertas', $service->findOfertas())->send();
     }
 }

@@ -4,8 +4,6 @@ declare(strict_types=1);
 
 class ProductoService
 {
-    private const MAX_IMAGENES = 3;
-
     private PDO $db;
 
     public function __construct()
@@ -24,16 +22,18 @@ class ProductoService
 
         $countStmt = $this->db->prepare(
             "SELECT COUNT(*) FROM producto p
-             JOIN producto_marca m ON p.marca_id = m.id
+             JOIN marca m ON p.marca_id = m.id
+             JOIN categoria c ON p.categoria_id = c.id
              {$whereClause}"
         );
         $countStmt->execute($values);
         $total = (int) $countStmt->fetchColumn();
 
         $stmt = $this->db->prepare(
-            "SELECT p.*, m.nombre AS marca_nombre
+            "SELECT p.*, m.nombre AS marca_nombre, c.nombre AS categoria_nombre
              FROM producto p
-             JOIN producto_marca m ON p.marca_id = m.id
+             JOIN marca m ON p.marca_id = m.id
+             JOIN categoria c ON p.categoria_id = c.id
              {$whereClause}
              ORDER BY p.nombre
              LIMIT ? OFFSET ?"
@@ -64,13 +64,120 @@ class ProductoService
         ];
     }
 
+    public function findOfertas(int $limit = 10): array
+    {
+        $hoy  = date('Y-m-d');
+
+        $stmt = $this->db->prepare(
+            "SELECT * FROM descuento WHERE fecha_desde <= ? AND fecha_hasta >= ?"
+        );
+        $stmt->execute([$hoy, $hoy]);
+        $descuentos = $stmt->fetchAll();
+
+        if (empty($descuentos)) {
+            return [];
+        }
+
+        $parts  = [];
+        $params = [];
+
+        $productoIds  = array_values(array_filter(array_column($descuentos, 'producto_id')));
+        $marcaIds     = array_values(array_filter(array_column($descuentos, 'marca_id')));
+        $categoriaIds = array_values(array_filter(array_column($descuentos, 'categoria_id')));
+        $etiquetaIds  = array_values(array_filter(array_column($descuentos, 'etiqueta_id')));
+
+        if (!empty($productoIds)) {
+            $phs = implode(',', array_fill(0, count($productoIds), '?'));
+            $parts[] = "p.id IN ($phs)";
+            array_push($params, ...$productoIds);
+        }
+        if (!empty($marcaIds)) {
+            $phs = implode(',', array_fill(0, count($marcaIds), '?'));
+            $parts[] = "p.marca_id IN ($phs)";
+            array_push($params, ...$marcaIds);
+        }
+        if (!empty($categoriaIds)) {
+            $phs = implode(',', array_fill(0, count($categoriaIds), '?'));
+            $parts[] = "p.categoria_id IN ($phs)";
+            array_push($params, ...$categoriaIds);
+        }
+        if (!empty($etiquetaIds)) {
+            $phs = implode(',', array_fill(0, count($etiquetaIds), '?'));
+            $parts[] = "EXISTS (SELECT 1 FROM producto_etiqueta pe WHERE pe.producto_id = p.id AND pe.etiqueta_id IN ($phs))";
+            array_push($params, ...$etiquetaIds);
+        }
+
+        if (empty($parts)) {
+            return [];
+        }
+
+        $params[] = $limit;
+
+        $stmt = $this->db->prepare(
+            "SELECT p.*, m.nombre AS marca_nombre, c.nombre AS categoria_nombre
+             FROM producto p
+             JOIN marca m ON p.marca_id = m.id
+             JOIN categoria c ON p.categoria_id = c.id
+             WHERE " . implode(' OR ', $parts) . "
+             ORDER BY p.id DESC
+             LIMIT ?"
+        );
+        $stmt->execute($params);
+        $productos = $stmt->fetchAll();
+
+        if (!empty($productos)) {
+            $ids       = array_column($productos, 'id');
+            $imagenes  = $this->fetchImagenesByIds($ids);
+            $etiquetas = $this->fetchEtiquetasByIds($ids);
+
+            foreach ($productos as &$producto) {
+                $producto['imagenes']  = $imagenes[$producto['id']] ?? [];
+                $producto['etiquetas'] = $etiquetas[$producto['id']] ?? [];
+            }
+            unset($producto);
+
+            $this->attachDescuentos($productos);
+
+            $productos = array_values(array_filter($productos, fn($p) => $p['descuento'] > 0));
+        }
+
+        return $productos;
+    }
+
+    public function findDestacados(int $minItems = 10): array
+    {
+        $productos = $this->fetchByEtiquetaNombre('Destacados');
+
+        if (count($productos) < $minItems) {
+            $excluirIds = array_column($productos, 'id');
+            $recientes  = $this->fetchRecientes($minItems - count($productos), $excluirIds);
+            $productos  = array_merge($productos, $recientes);
+        }
+
+        if (!empty($productos)) {
+            $ids       = array_column($productos, 'id');
+            $imagenes  = $this->fetchImagenesByIds($ids);
+            $etiquetas = $this->fetchEtiquetasByIds($ids);
+
+            foreach ($productos as &$producto) {
+                $producto['imagenes']  = $imagenes[$producto['id']] ?? [];
+                $producto['etiquetas'] = $etiquetas[$producto['id']] ?? [];
+            }
+            unset($producto);
+
+            $this->attachDescuentos($productos);
+        }
+
+        return $productos;
+    }
+
     public function findById(int $id): ?array
     {
         $stmt = $this->db->prepare(
-            'SELECT p.*,
-                    m.nombre AS marca_nombre
+            'SELECT p.*, m.nombre AS marca_nombre, c.nombre AS categoria_nombre
              FROM producto p
-             JOIN producto_marca m ON p.marca_id = m.id
+             JOIN marca m ON p.marca_id = m.id
+             JOIN categoria c ON p.categoria_id = c.id
              WHERE p.id = ?'
         );
         $stmt->execute([$id]);
@@ -92,8 +199,8 @@ class ProductoService
     public function create(array $data, int $userId): array
     {
         $stmt = $this->db->prepare(
-            'INSERT INTO producto (nombre, codigo, descripcion, precio, marca_id, creado_por, creado_el)
-             VALUES (?, ?, ?, ?, ?, ?, ?)'
+            'INSERT INTO producto (nombre, codigo, descripcion, precio, marca_id, categoria_id, creado_por, creado_el)
+             VALUES (?, ?, ?, ?, ?, ?, ?, ?)'
         );
         $stmt->execute([
             $data['nombre'],
@@ -101,6 +208,7 @@ class ProductoService
             $data['descripcion'] ?? null,
             $data['precio'],
             $data['marca_id'],
+            $data['categoria_id'],
             $userId,
             $this->now(),
         ]);
@@ -138,6 +246,10 @@ class ProductoService
         if (isset($data['marca_id'])) {
             $fields[] = 'marca_id = ?';
             $values[] = $data['marca_id'];
+        }
+        if (isset($data['categoria_id'])) {
+            $fields[] = 'categoria_id = ?';
+            $values[] = $data['categoria_id'];
         }
 
         if (!empty($fields)) {
@@ -214,6 +326,61 @@ class ProductoService
 
     // ── Privados ──────────────────────────────────────────────────────────────
 
+    private function fetchRecientes(int $limit, array $excluirIds = []): array
+    {
+        if (!empty($excluirIds)) {
+            $placeholders = implode(',', array_fill(0, count($excluirIds), '?'));
+            $stmt = $this->db->prepare(
+                "SELECT p.*, m.nombre AS marca_nombre, c.nombre AS categoria_nombre
+                 FROM producto p
+                 JOIN marca m ON p.marca_id = m.id
+                 JOIN categoria c ON p.categoria_id = c.id
+                 WHERE p.id NOT IN ($placeholders)
+                 ORDER BY p.creado_el DESC
+                 LIMIT ?"
+            );
+            $stmt->execute([...$excluirIds, $limit]);
+        } else {
+            $stmt = $this->db->prepare(
+                "SELECT p.*, m.nombre AS marca_nombre, c.nombre AS categoria_nombre
+                 FROM producto p
+                 JOIN marca m ON p.marca_id = m.id
+                 JOIN categoria c ON p.categoria_id = c.id
+                 ORDER BY p.creado_el DESC
+                 LIMIT ?"
+            );
+            $stmt->execute([$limit]);
+        }
+
+        return $stmt->fetchAll();
+    }
+
+    private function fetchByEtiquetaNombre(string $nombre): array
+    {
+        $stmt = $this->db->prepare(
+            "SELECT id FROM etiqueta WHERE LOWER(nombre) = LOWER(?) LIMIT 1"
+        );
+        $stmt->execute([$nombre]);
+        $etiqueta = $stmt->fetch();
+
+        if (!$etiqueta) {
+            return [];
+        }
+
+        $stmt = $this->db->prepare(
+            "SELECT p.*, m.nombre AS marca_nombre, c.nombre AS categoria_nombre
+             FROM producto p
+             JOIN marca m ON p.marca_id = m.id
+             JOIN categoria c ON p.categoria_id = c.id
+             WHERE EXISTS (
+                 SELECT 1 FROM producto_etiqueta pe
+                 WHERE pe.producto_id = p.id AND pe.etiqueta_id = ?
+             )"
+        );
+        $stmt->execute([$etiqueta['id']]);
+        return $stmt->fetchAll();
+    }
+
     private function buildWhere(array $params): array
     {
         $where  = [];
@@ -242,6 +409,10 @@ class ProductoService
         if ($params['marca_id'] !== null) {
             $where[]  = 'p.marca_id = ?';
             $values[] = $params['marca_id'];
+        }
+        if ($params['categoria_id'] !== null) {
+            $where[]  = 'p.categoria_id = ?';
+            $values[] = $params['categoria_id'];
         }
         if (!empty($params['etiquetas'])) {
             $placeholders = implode(',', array_fill(0, count($params['etiquetas']), '?'));
@@ -332,6 +503,7 @@ class ProductoService
         $hoy         = date('Y-m-d');
         $productoIds = array_column($productos, 'id');
         $marcaIds    = array_unique(array_column($productos, 'marca_id'));
+        $categoriaIds = array_unique(array_column($productos, 'categoria_id'));
 
         $etiquetaIds = [];
         foreach ($productos as $p) {
@@ -351,6 +523,10 @@ class ProductoService
         $mphs    = implode(',', array_fill(0, count($marcaIds), '?'));
         $parts[] = "marca_id IN ($mphs)";
         array_push($params, ...$marcaIds);
+
+        $cphs    = implode(',', array_fill(0, count($categoriaIds), '?'));
+        $parts[] = "categoria_id IN ($cphs)";
+        array_push($params, ...$categoriaIds);
 
         if (!empty($etiquetaIds)) {
             $ephs    = implode(',', array_fill(0, count($etiquetaIds), '?'));
@@ -385,9 +561,10 @@ class ProductoService
     {
         $etiquetaIds = array_map('intval', array_column($producto['etiquetas'], 'id'));
 
-        $byProducto = null;
-        $byEtiqueta = null;
-        $byMarca    = null;
+        $byProducto  = null;
+        $byEtiqueta  = null;
+        $byCategoria = null;
+        $byMarca     = null;
 
         foreach ($descuentos as $d) {
             $pct = (float) $d['porcentaje'];
@@ -400,6 +577,10 @@ class ProductoService
                 if (!$byEtiqueta || $pct > (float) $byEtiqueta['porcentaje']) {
                     $byEtiqueta = $d;
                 }
+            } elseif ($d['categoria_id'] !== null && (int) $d['categoria_id'] === (int) $producto['categoria_id']) {
+                if (!$byCategoria || $pct > (float) $byCategoria['porcentaje']) {
+                    $byCategoria = $d;
+                }
             } elseif ($d['marca_id'] !== null && (int) $d['marca_id'] === (int) $producto['marca_id']) {
                 if (!$byMarca || $pct > (float) $byMarca['porcentaje']) {
                     $byMarca = $d;
@@ -407,7 +588,7 @@ class ProductoService
             }
         }
 
-        return $byProducto ?? $byEtiqueta ?? $byMarca;
+        return $byProducto ?? $byEtiqueta ?? $byCategoria ?? $byMarca;
     }
 
     private function now(): string

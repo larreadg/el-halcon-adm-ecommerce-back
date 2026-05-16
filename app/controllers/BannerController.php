@@ -4,7 +4,9 @@ declare(strict_types=1);
 
 class BannerController
 {
-    private const MAX_SIDE_BANNER = 1280;
+    private const MAX_SIDE_BANNER   = 2100;
+    private const BANNER_WIDTH      = 2100;
+    private const BANNER_HEIGHT     = 600;
 
     public function index(): void
     {
@@ -42,8 +44,8 @@ class BannerController
             return;
         }
 
-        if (!ImageHelper::validateAspectRatio($file)) {
-            ApiResponse::error('La imagen debe tener proporción 16:9', 422)->send();
+        if (!ImageHelper::validateDimensions($file, self::BANNER_WIDTH, self::BANNER_HEIGHT)) {
+            ApiResponse::error('La imagen debe ser de ' . self::BANNER_WIDTH . 'x' . self::BANNER_HEIGHT . ' px', 422)->send();
             return;
         }
 
@@ -84,8 +86,8 @@ class BannerController
         $storedImage = null;
 
         if ($file) {
-            if (!ImageHelper::validateAspectRatio($file)) {
-                ApiResponse::error('La imagen debe tener proporción 16:9', 422)->send();
+            if (!ImageHelper::validateDimensions($file, self::BANNER_WIDTH, self::BANNER_HEIGHT)) {
+                ApiResponse::error('La imagen debe ser de ' . self::BANNER_WIDTH . 'x' . self::BANNER_HEIGHT . ' px', 422)->send();
                 return;
             }
 
@@ -141,8 +143,8 @@ class BannerController
             return;
         }
 
-        if (!ImageHelper::validateAspectRatio($file)) {
-            ApiResponse::error('La imagen debe tener proporción 16:9', 422)->send();
+        if (!ImageHelper::validateDimensions($file, self::BANNER_WIDTH, self::BANNER_HEIGHT)) {
+            ApiResponse::error('La imagen debe ser de ' . self::BANNER_WIDTH . 'x' . self::BANNER_HEIGHT . ' px', 422)->send();
             return;
         }
 

@@ -54,6 +54,18 @@ class ImageHelper
     }
 
     /**
+     * Valida que la imagen tenga exactamente las dimensiones indicadas.
+     */
+    public static function validateDimensions(array $file, int $requiredWidth, int $requiredHeight): bool
+    {
+        $size = getimagesize($file['tmp_name']);
+        if (!$size) {
+            return false;
+        }
+        return (int) $size[0] === $requiredWidth && (int) $size[1] === $requiredHeight;
+    }
+
+    /**
      * Procesa y guarda la imagen en uploads/$subdir/.
      * Devuelve ['absolute_path' => ..., 'relative_path' => ...] o null si falla.
      */

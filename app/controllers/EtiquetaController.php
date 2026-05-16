@@ -82,11 +82,19 @@ class EtiquetaController
     public function destroy(int $id): void
     {
         $service = new EtiquetaService();
+        $etiqueta = $service->findById($id);
 
-        if (!$service->delete($id)) {
+        if (!$etiqueta) {
             ApiResponse::error('Etiqueta no encontrada', 404)->send();
             return;
         }
+
+        if ($service->isNonDeletableName((string) $etiqueta['nombre'])) {
+            ApiResponse::error(sprintf('La etiqueta "%s" no se puede eliminar', $etiqueta['nombre']), 409)->send();
+            return;
+        }
+
+        $service->delete($id);
 
         ApiResponse::success('Etiqueta eliminada correctamente')->send();
     }

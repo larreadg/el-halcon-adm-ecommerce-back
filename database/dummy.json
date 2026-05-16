@@ -1,0 +1,986 @@
+[
+    {
+        "id": 1,
+        "fichaTecnicaId": null,
+        "codigo": "1000006",
+        "codigoBarras": "7891040124152",
+        "nombre": "CERA BRILLO200G. (H000233488)",
+        "descripcion": "CERA BRILLO200G. (H000233488)",
+        "especificacionesAdicionales": null,
+        "orden": null,
+        "destacado": null,
+        "borrador": null,
+        "precio": "33.500",
+        "precioPromocion": "0",
+        "cantidad": null,
+        "activo": 1,
+        "eliminado": 0,
+        "inactivoDesde": null,
+        "marca": "3M",
+        "jerarquiaId": 19,
+        "jerarquia": "Automotriz",
+        "jerarquiaOrden": 19,
+        "multimedia": [
+            {
+                "id": 38,
+                "tipo": "foto-item",
+                "nombre": null,
+                "url": "public/ferrex/1000006.jpg",
+                "descripcion": null,
+                "fecha": "2022-09-02 18:49:21"
+            }
+        ],
+        "jerarquias": [
+            {
+                "id": 19,
+                "multimediaId": null,
+                "nombre": "Automotriz",
+                "orden": 19,
+                "jerarquiaPapa": []
+            }
+        ]
+    },
+    {
+        "id": 2,
+        "fichaTecnicaId": null,
+        "codigo": "1013638",
+        "codigoBarras": "0066366701814",
+        "nombre": "JGO-GRILLETE 2PZS 1 GUARDACABO 3/16 3PZ MIBRO (701811)",
+        "descripcion": "JGO 2 GRILLETES 1 GUARDACABO 3/16 3PZ MIBRO (701811)",
+        "especificacionesAdicionales": "",
+        "orden": null,
+        "destacado": null,
+        "borrador": null,
+        "precio": "17.000",
+        "precioPromocion": "0",
+        "cantidad": null,
+        "activo": 1,
+        "eliminado": 0,
+        "inactivoDesde": null,
+        "marca": "ORYENT",
+        "jerarquiaId": 3,
+        "jerarquia": "Cadenas, cabos y garruchas",
+        "jerarquiaOrden": 3,
+        "multimedia": [
+            {
+                "id": 39,
+                "tipo": "foto-item",
+                "nombre": null,
+                "url": "public/ferrex/1013638.jpg",
+                "descripcion": null,
+                "fecha": "2022-09-02 18:49:21"
+            }
+        ],
+        "jerarquias": [
+            {
+                "id": 3,
+                "multimediaId": null,
+                "nombre": "Cadenas, cabos y garruchas",
+                "orden": 3,
+                "jerarquiaPapa": []
+            }
+        ]
+    },
+    {
+        "id": 3,
+        "fichaTecnicaId": null,
+        "codigo": "1001052",
+        "codigoBarras": "LA10065327",
+        "nombre": "PUNTAS MONTADAS NORTON C235 (10065327)",
+        "descripcion": "PUNTAS MONTADAS NORTON C235 (10065327)",
+        "especificacionesAdicionales": null,
+        "orden": null,
+        "destacado": null,
+        "borrador": null,
+        "precio": "8.500",
+        "precioPromocion": "0",
+        "cantidad": null,
+        "activo": 1,
+        "eliminado": 0,
+        "inactivoDesde": null,
+        "marca": "NORTON",
+        "jerarquiaId": 13,
+        "jerarquia": "Accesorios para herramientas",
+        "jerarquiaOrden": 13,
+        "multimedia": [
+            {
+                "id": 40,
+                "tipo": "foto-item",
+                "nombre": null,
+                "url": "public/ferrex/1001052.jpg",
+                "descripcion": null,
+                "fecha": "2022-09-02 18:49:21"
+            }
+        ],
+        "jerarquias": [
+            {
+                "id": 13,
+                "multimediaId": null,
+                "nombre": "Accesorios para herramientas",
+                "orden": 13,
+                "jerarquiaPapa": []
+            }
+        ]
+    },
+    {
+        "id": 4,
+        "fichaTecnicaId": null,
+        "codigo": "1410099",
+        "codigoBarras": "0078693006814",
+        "nombre": "PORTA LAMPARA DE TRABAJO CON CABLE DE 7.6MT WOODS (0000000 0",
+        "descripcion": "PORTA LAMPARA DE TRABAJO CON CABLE DE 7.6MT WOODS (0000000 0681)",
+        "especificacionesAdicionales": "",
+        "orden": null,
+        "destacado": null,
+        "borrador": null,
+        "precio": "272.000",
+        "precioPromocion": "0",
+        "cantidad": null,
+        "activo": 1,
+        "eliminado": 0,
+        "inactivoDesde": null,
+        "marca": "COLEMAN CA",
+        "jerarquiaId": 8,
+        "jerarquia": "Material eléctrico",
+        "jerarquiaOrden": 8,
+        "multimedia": [
+            {
+                "id": 41,
+                "tipo": "foto-item",
+                "nombre": null,
+                "url": "public/ferrex/1410099.jpg",
+                "descripcion": null,
+                "fecha": "2022-09-02 18:49:21"
+            }
+        ],
+        "jerarquias": [
+            {
+                "id": 8,
+                "multimediaId": null,
+                "nombre": "Material eléctrico",
+                "orden": 8,
+                "jerarquiaPapa": []
+            }
+        ]
+    },
+    {
+        "id": 5,
+        "fichaTecnicaId": null,
+        "codigo": "1410106",
+        "codigoBarras": "0029069753078",
+        "nombre": "LLAVERO MINI NIVEL (KB307-BKT)",
+        "descripcion": "LLAVERO MINI NIVEL (KB307-BKT)",
+        "especificacionesAdicionales": null,
+        "orden": null,
+        "destacado": null,
+        "borrador": null,
+        "precio": "14.000",
+        "precioPromocion": "0",
+        "cantidad": null,
+        "activo": 1,
+        "eliminado": 0,
+        "inactivoDesde": null,
+        "marca": "HY-KO PROD",
+        "jerarquiaId": 11,
+        "jerarquia": "Organización y hogar",
+        "jerarquiaOrden": 11,
+        "multimedia": [
+            {
+                "id": 42,
+                "tipo": "foto-item",
+                "nombre": null,
+                "url": "public/ferrex/1410106.jpg",
+                "descripcion": null,
+                "fecha": "2022-09-02 18:49:21"
+            }
+        ],
+        "jerarquias": [
+            {
+                "id": 11,
+                "multimediaId": null,
+                "nombre": "Organización y hogar",
+                "orden": 11,
+                "jerarquiaPapa": []
+            }
+        ]
+    },
+    {
+        "id": 7,
+        "fichaTecnicaId": null,
+        "codigo": "1410107",
+        "codigoBarras": "0029069753221",
+        "nombre": "LLAVERO DESTORNILLADORES (0000000 KB322-BKT)",
+        "descripcion": "LLAVERO DESTORNILLADORES (0000000 KB322-BKT)",
+        "especificacionesAdicionales": null,
+        "orden": null,
+        "destacado": null,
+        "borrador": null,
+        "precio": "27.500",
+        "precioPromocion": "0",
+        "cantidad": null,
+        "activo": 1,
+        "eliminado": 0,
+        "inactivoDesde": null,
+        "marca": "HY-KO PROD",
+        "jerarquiaId": 11,
+        "jerarquia": "Organización y hogar",
+        "jerarquiaOrden": 11,
+        "multimedia": [
+            {
+                "id": 44,
+                "tipo": "foto-item",
+                "nombre": null,
+                "url": "public/ferrex/1410107.jpg",
+                "descripcion": null,
+                "fecha": "2022-09-02 18:49:21"
+            }
+        ],
+        "jerarquias": [
+            {
+                "id": 11,
+                "multimediaId": null,
+                "nombre": "Organización y hogar",
+                "orden": 11,
+                "jerarquiaPapa": []
+            }
+        ]
+    },
+    {
+        "id": 11,
+        "fichaTecnicaId": null,
+        "codigo": "1410127",
+        "codigoBarras": "0886316124278",
+        "nombre": "LAMPARA-MESA CREMA+COBRE 1LUZ E27 40W N/B (09 22227-5) (09 2",
+        "descripcion": "LAMPARA-MESA CREMA+COBRE 1LUZ E27 40W N/B (09 22227-5) (09 22227-5)",
+        "especificacionesAdicionales": "",
+        "orden": null,
+        "destacado": null,
+        "borrador": null,
+        "precio": "207.200",
+        "precioPromocion": "0",
+        "cantidad": null,
+        "activo": 1,
+        "eliminado": 0,
+        "inactivoDesde": null,
+        "marca": "IKELITE",
+        "jerarquiaId": 16,
+        "jerarquia": "Iluminación",
+        "jerarquiaOrden": 16,
+        "multimedia": [
+            {
+                "id": 48,
+                "tipo": "foto-item",
+                "nombre": null,
+                "url": "public/ferrex/1410127.jpg",
+                "descripcion": null,
+                "fecha": "2022-09-02 18:49:21"
+            }
+        ],
+        "jerarquias": [
+            {
+                "id": 16,
+                "multimediaId": null,
+                "nombre": "Iluminación",
+                "orden": 16,
+                "jerarquiaPapa": []
+            }
+        ]
+    },
+    {
+        "id": 15,
+        "fichaTecnicaId": null,
+        "codigo": "1013760",
+        "codigoBarras": "0066366261233",
+        "nombre": "MECHA P/CONCRETO 3/4X6 MIBRO (261231)",
+        "descripcion": "MECHA P/CONCRETO 3/4X6 MIBRO (261231)",
+        "especificacionesAdicionales": null,
+        "orden": null,
+        "destacado": null,
+        "borrador": null,
+        "precio": "61.000",
+        "precioPromocion": "0",
+        "cantidad": null,
+        "activo": 1,
+        "eliminado": 0,
+        "inactivoDesde": null,
+        "marca": "MIBRO",
+        "jerarquiaId": 13,
+        "jerarquia": "Accesorios para herramientas",
+        "jerarquiaOrden": 13,
+        "multimedia": [
+            {
+                "id": 52,
+                "tipo": "foto-item",
+                "nombre": null,
+                "url": "public/ferrex/1013760.jpg",
+                "descripcion": null,
+                "fecha": "2022-09-02 18:49:21"
+            }
+        ],
+        "jerarquias": [
+            {
+                "id": 13,
+                "multimediaId": null,
+                "nombre": "Accesorios para herramientas",
+                "orden": 13,
+                "jerarquiaPapa": []
+            }
+        ]
+    },
+    {
+        "id": 16,
+        "fichaTecnicaId": null,
+        "codigo": "1410164",
+        "codigoBarras": "0886316118406",
+        "nombre": "LAMPARA-TECHO EXT. NEGRO 1L E27 60W (IB A60 9W 6000K) (46 21",
+        "descripcion": "LAMPARA-TECHO EXT. NEGRO 1L E27 60W (IB A60 9W 6000K) (46 2184",
+        "especificacionesAdicionales": "",
+        "orden": null,
+        "destacado": null,
+        "borrador": null,
+        "precio": "196.700",
+        "precioPromocion": "0",
+        "cantidad": null,
+        "activo": 1,
+        "eliminado": 0,
+        "inactivoDesde": null,
+        "marca": "IKELITE",
+        "jerarquiaId": 16,
+        "jerarquia": "Iluminación",
+        "jerarquiaOrden": 16,
+        "multimedia": [
+            {
+                "id": 53,
+                "tipo": "foto-item",
+                "nombre": null,
+                "url": "public/ferrex/1410164.jpg",
+                "descripcion": null,
+                "fecha": "2022-09-02 18:49:21"
+            }
+        ],
+        "jerarquias": [
+            {
+                "id": 16,
+                "multimediaId": null,
+                "nombre": "Iluminación",
+                "orden": 16,
+                "jerarquiaPapa": []
+            }
+        ]
+    },
+    {
+        "id": 17,
+        "fichaTecnicaId": null,
+        "codigo": "1410165",
+        "codigoBarras": "0886316120812",
+        "nombre": "LAMPARA-PARED EXT- NEGRO 1LUZ E27 40W N/B (46 21946-2) (46 2",
+        "descripcion": "LAMPARA-PARED EXT- NEGRO 1LUZ E27 40W N/B (46 21946-2) (46 21946-2)",
+        "especificacionesAdicionales": "",
+        "orden": null,
+        "destacado": null,
+        "borrador": null,
+        "precio": "280.500",
+        "precioPromocion": "0",
+        "cantidad": null,
+        "activo": 1,
+        "eliminado": 0,
+        "inactivoDesde": null,
+        "marca": "DESIGNERS",
+        "jerarquiaId": 16,
+        "jerarquia": "Iluminación",
+        "jerarquiaOrden": 16,
+        "multimedia": [
+            {
+                "id": 54,
+                "tipo": "foto-item",
+                "nombre": null,
+                "url": "public/ferrex/1410165.jpg",
+                "descripcion": null,
+                "fecha": "2022-09-02 18:49:21"
+            }
+        ],
+        "jerarquias": [
+            {
+                "id": 16,
+                "multimediaId": null,
+                "nombre": "Iluminación",
+                "orden": 16,
+                "jerarquiaPapa": []
+            }
+        ]
+    },
+    {
+        "id": 19,
+        "fichaTecnicaId": null,
+        "codigo": "1410171",
+        "codigoBarras": "0886316122205",
+        "nombre": "LAMPARA-COLGANTE DORADO Y NEGRO 1LUZ E27 60W N/B (56 22058-9",
+        "descripcion": "LAMPARA-COLGANTE DORADO Y NEGRO 1LUZ E27 60W N/B (56 22058-9)",
+        "especificacionesAdicionales": "",
+        "orden": null,
+        "destacado": null,
+        "borrador": null,
+        "precio": "370.800",
+        "precioPromocion": "0",
+        "cantidad": null,
+        "activo": 1,
+        "eliminado": 0,
+        "inactivoDesde": null,
+        "marca": "IKELITE",
+        "jerarquiaId": 16,
+        "jerarquia": "Iluminación",
+        "jerarquiaOrden": 16,
+        "multimedia": [
+            {
+                "id": 56,
+                "tipo": "foto-item",
+                "nombre": null,
+                "url": "public/ferrex/1410171.jpg",
+                "descripcion": null,
+                "fecha": "2022-09-02 18:49:21"
+            }
+        ],
+        "jerarquias": [
+            {
+                "id": 16,
+                "multimediaId": null,
+                "nombre": "Iluminación",
+                "orden": 16,
+                "jerarquiaPapa": []
+            }
+        ]
+    },
+    {
+        "id": 20,
+        "fichaTecnicaId": null,
+        "codigo": "1015793",
+        "codigoBarras": "0843956212147",
+        "nombre": "BALDE-C/PRENSAMOPA 32LT INDUSTRIAL AMARILL (AF08080)",
+        "descripcion": "FERREX Balde Trapeador 32L Amarillo.\nEvita salpicaduras facilitando un trapeado seguro y eficiente.\nReduce hasta 40% el salpicado.\nRueda de pequeña huella.\nEscurridor lateral de alta eficiencia.\nAcero tubular y plástico estructurado que soportan uso inten",
+        "especificacionesAdicionales": "",
+        "orden": null,
+        "destacado": null,
+        "borrador": null,
+        "precio": "549.000",
+        "precioPromocion": "0",
+        "cantidad": null,
+        "activo": 1,
+        "eliminado": 0,
+        "inactivoDesde": null,
+        "marca": "ORYENT",
+        "jerarquiaId": 20,
+        "jerarquia": "Limpieza y electrodomésticos pequeños",
+        "jerarquiaOrden": 20,
+        "multimedia": [
+            {
+                "id": 57,
+                "tipo": "foto-item",
+                "nombre": null,
+                "url": "public/ferrex/1015793.jpg",
+                "descripcion": null,
+                "fecha": "2022-09-02 18:49:21"
+            }
+        ],
+        "jerarquias": [
+            {
+                "id": 20,
+                "multimediaId": null,
+                "nombre": "Limpieza y electrodomésticos pequeños",
+                "orden": 20,
+                "jerarquiaPapa": []
+            }
+        ]
+    },
+    {
+        "id": 21,
+        "fichaTecnicaId": null,
+        "codigo": "1410187",
+        "codigoBarras": "7841722000120",
+        "nombre": "REPELENTE DE INSECTOS 100ml INESFLY BODY (44007)",
+        "descripcion": "REPELENTE DE INSECTOS 100ml INESFLY BODY (44007)",
+        "especificacionesAdicionales": "",
+        "orden": null,
+        "destacado": null,
+        "borrador": null,
+        "precio": "35.000",
+        "precioPromocion": "32.000",
+        "cantidad": null,
+        "activo": 1,
+        "eliminado": 0,
+        "inactivoDesde": null,
+        "marca": "MATHER COM",
+        "jerarquiaId": 20,
+        "jerarquia": "Limpieza y electrodomésticos pequeños",
+        "jerarquiaOrden": 20,
+        "multimedia": [
+            {
+                "id": 58,
+                "tipo": "foto-item",
+                "nombre": null,
+                "url": "public/ferrex/1410187.jpg",
+                "descripcion": null,
+                "fecha": "2022-09-02 18:49:21"
+            }
+        ],
+        "jerarquias": [
+            {
+                "id": 20,
+                "multimediaId": null,
+                "nombre": "Limpieza y electrodomésticos pequeños",
+                "orden": 20,
+                "jerarquiaPapa": []
+            }
+        ]
+    },
+    {
+        "id": 22,
+        "fichaTecnicaId": null,
+        "codigo": "1410188",
+        "codigoBarras": "7841722000267",
+        "nombre": "RECUBRIMIENTO INSECTICIDA TIPO PINTURA COLOR BLANCO 10ltsINE",
+        "descripcion": "RECUBRIMIENTO INSECTICIDA TIPO PINTURA COLOR BLANCO 10ltsINESFLY 5A IGR NG (44001)",
+        "especificacionesAdicionales": "",
+        "orden": null,
+        "destacado": null,
+        "borrador": null,
+        "precio": "877.000",
+        "precioPromocion": "789.000",
+        "cantidad": null,
+        "activo": 1,
+        "eliminado": 0,
+        "inactivoDesde": null,
+        "marca": "MATHER COM",
+        "jerarquiaId": 20,
+        "jerarquia": "Limpieza y electrodomésticos pequeños",
+        "jerarquiaOrden": 20,
+        "multimedia": [
+            {
+                "id": 59,
+                "tipo": "foto-item",
+                "nombre": null,
+                "url": "public/ferrex/1410188.jpg",
+                "descripcion": null,
+                "fecha": "2022-09-02 18:49:21"
+            }
+        ],
+        "jerarquias": [
+            {
+                "id": 20,
+                "multimediaId": null,
+                "nombre": "Limpieza y electrodomésticos pequeños",
+                "orden": 20,
+                "jerarquiaPapa": []
+            }
+        ]
+    },
+    {
+        "id": 26,
+        "fichaTecnicaId": null,
+        "codigo": "1410209",
+        "codigoBarras": "0045734622296",
+        "nombre": "PARRILLA OMAHA DE 14' 36CM (8825168 57458)",
+        "descripcion": "PARRILLA OMAHA DE 14 (8825168 57458)",
+        "especificacionesAdicionales": null,
+        "orden": null,
+        "destacado": 1,
+        "borrador": null,
+        "precio": "309.500",
+        "precioPromocion": "248.000",
+        "cantidad": null,
+        "activo": 1,
+        "eliminado": 0,
+        "inactivoDesde": null,
+        "marca": "OMAHA",
+        "jerarquiaId": 18,
+        "jerarquia": "Jardín, piscina y quincho",
+        "jerarquiaOrden": 18,
+        "multimedia": [
+            {
+                "id": 63,
+                "tipo": "foto-item",
+                "nombre": null,
+                "url": "public/ferrex/1410209.jpg",
+                "descripcion": null,
+                "fecha": "2022-09-02 18:49:21"
+            }
+        ],
+        "jerarquias": [
+            {
+                "id": 18,
+                "multimediaId": null,
+                "nombre": "Jardín, piscina y quincho",
+                "orden": 18,
+                "jerarquiaPapa": []
+            }
+        ]
+    },
+    {
+        "id": 28,
+        "fichaTecnicaId": null,
+        "codigo": "1410216",
+        "codigoBarras": "7793863293209",
+        "nombre": "CINTA.PASACABLES PLAST. KALOP 20MTS. (KA1129)",
+        "descripcion": "CINTA.PASACABLES PLAST. KALOP 20MTS. (KA1129)",
+        "especificacionesAdicionales": null,
+        "orden": null,
+        "destacado": null,
+        "borrador": null,
+        "precio": "44.500",
+        "precioPromocion": "0",
+        "cantidad": null,
+        "activo": 1,
+        "eliminado": 0,
+        "inactivoDesde": null,
+        "marca": "KALOP",
+        "jerarquiaId": 8,
+        "jerarquia": "Material eléctrico",
+        "jerarquiaOrden": 8,
+        "multimedia": [
+            {
+                "id": 65,
+                "tipo": "foto-item",
+                "nombre": null,
+                "url": "public/ferrex/1410216.jpg",
+                "descripcion": null,
+                "fecha": "2022-09-02 18:49:21"
+            }
+        ],
+        "jerarquias": [
+            {
+                "id": 8,
+                "multimediaId": null,
+                "nombre": "Material eléctrico",
+                "orden": 8,
+                "jerarquiaPapa": []
+            }
+        ]
+    },
+    {
+        "id": 29,
+        "fichaTecnicaId": null,
+        "codigo": "1410217",
+        "codigoBarras": "7793863750702",
+        "nombre": "CINTA.PASACABLES CON ALMA DE ACERO KALOP 15MTS. (KA2915)",
+        "descripcion": "CINTA.PASACABLES CON ALMA DE ACERO KALOP 15MTS. (KA2915)",
+        "especificacionesAdicionales": "",
+        "orden": null,
+        "destacado": null,
+        "borrador": null,
+        "precio": "52.500",
+        "precioPromocion": "0",
+        "cantidad": null,
+        "activo": 1,
+        "eliminado": 0,
+        "inactivoDesde": null,
+        "marca": "KALOP",
+        "jerarquiaId": 8,
+        "jerarquia": "Material eléctrico",
+        "jerarquiaOrden": 8,
+        "multimedia": [
+            {
+                "id": 66,
+                "tipo": "foto-item",
+                "nombre": null,
+                "url": "public/ferrex/1410217.jpg",
+                "descripcion": null,
+                "fecha": "2022-09-02 18:49:21"
+            }
+        ],
+        "jerarquias": [
+            {
+                "id": 8,
+                "multimediaId": null,
+                "nombre": "Material eléctrico",
+                "orden": 8,
+                "jerarquiaPapa": []
+            }
+        ]
+    },
+    {
+        "id": 30,
+        "fichaTecnicaId": null,
+        "codigo": "1015907",
+        "codigoBarras": "0664393001138",
+        "nombre": "CENEFA DECOR MAGNOLIA PARA VENTANAS 60X90 (9782947)",
+        "descripcion": "CENEFA DECOR MAGNOLIA PARA VENTANAS 60X90 (9782947)",
+        "especificacionesAdicionales": "",
+        "orden": null,
+        "destacado": null,
+        "borrador": null,
+        "precio": "224.000",
+        "precioPromocion": "0",
+        "cantidad": null,
+        "activo": 1,
+        "eliminado": 0,
+        "inactivoDesde": null,
+        "marca": "ARTSCAPE I",
+        "jerarquiaId": 1,
+        "jerarquia": "Pinturas y accesorios",
+        "jerarquiaOrden": 1,
+        "multimedia": [
+            {
+                "id": 67,
+                "tipo": "foto-item",
+                "nombre": null,
+                "url": "public/ferrex/1015907.jpg",
+                "descripcion": null,
+                "fecha": "2022-09-02 18:49:21"
+            }
+        ],
+        "jerarquias": [
+            {
+                "id": 1,
+                "multimediaId": null,
+                "nombre": "Pinturas y accesorios",
+                "orden": 1,
+                "jerarquiaPapa": []
+            }
+        ]
+    },
+    {
+        "id": 31,
+        "fichaTecnicaId": null,
+        "codigo": "1410222",
+        "codigoBarras": "0843956996917",
+        "nombre": "SOPLADOR MULTIUSO 3 250W ALUMINIO (BIW-CYDYX51 3)",
+        "descripcion": "SOPLADOR MULTIUSO 3 250W ALUMINIO (BIW-CYDYX51 3)",
+        "especificacionesAdicionales": "",
+        "orden": null,
+        "destacado": null,
+        "borrador": null,
+        "precio": "510.000",
+        "precioPromocion": "0",
+        "cantidad": null,
+        "activo": 1,
+        "eliminado": 0,
+        "inactivoDesde": null,
+        "marca": "CHINO",
+        "jerarquiaId": 12,
+        "jerarquia": "Herramienta eléctrica y máquinas",
+        "jerarquiaOrden": 12,
+        "multimedia": [
+            {
+                "id": 68,
+                "tipo": "foto-item",
+                "nombre": null,
+                "url": "public/ferrex/1410222.jpg",
+                "descripcion": null,
+                "fecha": "2022-09-02 18:49:21"
+            }
+        ],
+        "jerarquias": [
+            {
+                "id": 12,
+                "multimediaId": null,
+                "nombre": "Herramienta eléctrica y máquinas",
+                "orden": 12,
+                "jerarquiaPapa": []
+            }
+        ]
+    },
+    {
+        "id": 32,
+        "fichaTecnicaId": null,
+        "codigo": "1015909",
+        "codigoBarras": "0070881006033",
+        "nombre": "ESPONJA TEXTURA 7X5X2 P/ EMPORAR ARMALY (7223829 00603)",
+        "descripcion": "ESPONJA.TEXTURA 7X5X2 P/ EMPORAR ARMALY (7223829 00603)",
+        "especificacionesAdicionales": "",
+        "orden": null,
+        "destacado": null,
+        "borrador": null,
+        "precio": "44.500",
+        "precioPromocion": "0",
+        "cantidad": null,
+        "activo": 1,
+        "eliminado": 0,
+        "inactivoDesde": null,
+        "marca": "ACME SPONG",
+        "jerarquiaId": 1,
+        "jerarquia": "Pinturas y accesorios",
+        "jerarquiaOrden": 1,
+        "multimedia": [
+            {
+                "id": 69,
+                "tipo": "foto-item",
+                "nombre": null,
+                "url": "public/ferrex/1015909.jpg",
+                "descripcion": null,
+                "fecha": "2022-09-02 18:49:21"
+            }
+        ],
+        "jerarquias": [
+            {
+                "id": 1,
+                "multimediaId": null,
+                "nombre": "Pinturas y accesorios",
+                "orden": 1,
+                "jerarquiaPapa": []
+            }
+        ]
+    },
+    {
+        "id": 33,
+        "fichaTecnicaId": null,
+        "codigo": "1015914",
+        "codigoBarras": "0095421070121",
+        "nombre": "CINTA.MAGNETICA FLEXIBLE 3 METROS X1/2 (8702417 7012)",
+        "descripcion": "CINTA.MAGNETICA FLEXIBLE 3 METROS X1/2 (8702417 7012)",
+        "especificacionesAdicionales": "",
+        "orden": null,
+        "destacado": null,
+        "borrador": null,
+        "precio": "46.000",
+        "precioPromocion": "0",
+        "cantidad": null,
+        "activo": 1,
+        "eliminado": 0,
+        "inactivoDesde": null,
+        "marca": "MASTER MAG",
+        "jerarquiaId": 2,
+        "jerarquia": "Tornillería y fijaciones",
+        "jerarquiaOrden": 2,
+        "multimedia": [
+            {
+                "id": 70,
+                "tipo": "foto-item",
+                "nombre": null,
+                "url": "public/ferrex/1015914.jpg",
+                "descripcion": null,
+                "fecha": "2022-09-02 18:49:21"
+            }
+        ],
+        "jerarquias": [
+            {
+                "id": 2,
+                "multimediaId": null,
+                "nombre": "Tornillería y fijaciones",
+                "orden": 2,
+                "jerarquiaPapa": []
+            }
+        ]
+    },
+    {
+        "id": 34,
+        "fichaTecnicaId": null,
+        "codigo": "1015915",
+        "codigoBarras": "0095421070534",
+        "nombre": "CINTA.MAGNETICA FLEXIBLE 76CM X 1 (5883798 7053)",
+        "descripcion": "CINTA.MAGNETICA FLEXIBLE 76CM X 1 (5883798 7053)",
+        "especificacionesAdicionales": "",
+        "orden": null,
+        "destacado": null,
+        "borrador": null,
+        "precio": "37.000",
+        "precioPromocion": "0",
+        "cantidad": null,
+        "activo": 1,
+        "eliminado": 0,
+        "inactivoDesde": null,
+        "marca": "MASTER MAG",
+        "jerarquiaId": 2,
+        "jerarquia": "Tornillería y fijaciones",
+        "jerarquiaOrden": 2,
+        "multimedia": [
+            {
+                "id": 71,
+                "tipo": "foto-item",
+                "nombre": null,
+                "url": "public/ferrex/1015915.jpg",
+                "descripcion": null,
+                "fecha": "2022-09-02 18:49:21"
+            }
+        ],
+        "jerarquias": [
+            {
+                "id": 2,
+                "multimediaId": null,
+                "nombre": "Tornillería y fijaciones",
+                "orden": 2,
+                "jerarquiaPapa": []
+            }
+        ]
+    },
+    {
+        "id": 35,
+        "fichaTecnicaId": null,
+        "codigo": "1000876",
+        "codigoBarras": "7891792995383",
+        "nombre": "DISCO DIAM.CLASSIC PRO 230X22 SEGMENTADO NORTON",
+        "descripcion": "DISCO DIAM.CLASSIC PRO 230X22 SEGMENTADO NORTON",
+        "especificacionesAdicionales": null,
+        "orden": null,
+        "destacado": null,
+        "borrador": null,
+        "precio": "84.500",
+        "precioPromocion": "0",
+        "cantidad": null,
+        "activo": 1,
+        "eliminado": 0,
+        "inactivoDesde": null,
+        "marca": "NORTON",
+        "jerarquiaId": 13,
+        "jerarquia": "Accesorios para herramientas",
+        "jerarquiaOrden": 13,
+        "multimedia": [
+            {
+                "id": 72,
+                "tipo": "foto-item",
+                "nombre": null,
+                "url": "public/ferrex/1000876.jpg",
+                "descripcion": null,
+                "fecha": "2022-09-02 18:49:21"
+            }
+        ],
+        "jerarquias": [
+            {
+                "id": 13,
+                "multimediaId": null,
+                "nombre": "Accesorios para herramientas",
+                "orden": 13,
+                "jerarquiaPapa": []
+            }
+        ]
+    },
+    {
+        "id": 36,
+        "fichaTecnicaId": null,
+        "codigo": "1015920",
+        "codigoBarras": "0049223502076",
+        "nombre": "COLGADOR PARA CUADROS (9080698 50207)",
+        "descripcion": "COLGADOR PARA CUADROS (9080698 50207)",
+        "especificacionesAdicionales": null,
+        "orden": null,
+        "destacado": null,
+        "borrador": null,
+        "precio": "20.500",
+        "precioPromocion": "0",
+        "cantidad": null,
+        "activo": 1,
+        "eliminado": 0,
+        "inactivoDesde": null,
+        "marca": "HILLMAN FA",
+        "jerarquiaId": 2,
+        "jerarquia": "Tornillería y fijaciones",
+        "jerarquiaOrden": 2,
+        "multimedia": [
+            {
+                "id": 73,
+                "tipo": "foto-item",
+                "nombre": null,
+                "url": "public/ferrex/1015920.jpg",
+                "descripcion": null,
+                "fecha": "2022-09-02 18:49:21"
+            }
+        ],
+        "jerarquias": [
+            {
+                "id": 2,
+                "multimediaId": null,
+                "nombre": "Tornillería y fijaciones",
+                "orden": 2,
+                "jerarquiaPapa": []
+            }
+        ]
+    }
+]
