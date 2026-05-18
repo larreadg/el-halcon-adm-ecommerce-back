@@ -64,6 +64,7 @@ CREATE TABLE producto (
     descripcion TEXT,
 
     precio REAL NOT NULL,
+    activo INTEGER NOT NULL DEFAULT 1,
 
     marca_id     INTEGER NOT NULL,
     categoria_id INTEGER NOT NULL,

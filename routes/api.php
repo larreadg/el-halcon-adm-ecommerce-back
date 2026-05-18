@@ -77,6 +77,7 @@ Flight::group('/api', function () {
     Flight::route('POST /productos',                                         [ProductoController::class, 'store']);
     Flight::route('POST /productos/@id:[0-9]+',                              [ProductoController::class, 'update']);
     Flight::route('PUT /productos/@id:[0-9]+',                               [ProductoController::class, 'update']);
+    Flight::route('PATCH /productos/@id:[0-9]+/activo',                       [ProductoController::class, 'toggleActivo']);
     Flight::route('DELETE /productos/@id:[0-9]+',                            [ProductoController::class, 'destroy']);
     Flight::route('POST /productos/@id:[0-9]+/imagenes',                     [ProductoController::class, 'uploadImagen']);
     Flight::route('DELETE /productos/@id:[0-9]+/imagenes/@imagenId:[0-9]+',  [ProductoController::class, 'destroyImagen']);

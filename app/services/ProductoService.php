@@ -118,7 +118,7 @@ class ProductoService
              FROM producto p
              JOIN marca m ON p.marca_id = m.id
              JOIN categoria c ON p.categoria_id = c.id
-             WHERE " . implode(' OR ', $parts) . "
+             WHERE p.activo = 1 AND (" . implode(' OR ', $parts) . ")
              ORDER BY p.id DESC
              LIMIT ?"
         );
@@ -277,6 +277,25 @@ class ProductoService
         return $stmt->rowCount() > 0;
     }
 
+    public function toggleActivo(int $id, int $userId): ?array
+    {
+        $stmt = $this->db->prepare('SELECT activo FROM producto WHERE id = ?');
+        $stmt->execute([$id]);
+        $row = $stmt->fetch();
+
+        if (!$row) {
+            return null;
+        }
+
+        $nuevoActivo = $row['activo'] ? 0 : 1;
+
+        $this->db->prepare(
+            'UPDATE producto SET activo = ?, modificado_por = ?, modificado_el = ? WHERE id = ?'
+        )->execute([$nuevoActivo, $userId, $this->now(), $id]);
+
+        return $this->findById($id);
+    }
+
     // ── Imágenes ──────────────────────────────────────────────────────────────
 
     public function countImagenes(int $productoId): int
@@ -335,7 +354,7 @@ class ProductoService
                  FROM producto p
                  JOIN marca m ON p.marca_id = m.id
                  JOIN categoria c ON p.categoria_id = c.id
-                 WHERE p.id NOT IN ($placeholders)
+                 WHERE p.activo = 1 AND p.id NOT IN ($placeholders)
                  ORDER BY p.creado_el DESC
                  LIMIT ?"
             );
@@ -346,6 +365,7 @@ class ProductoService
                  FROM producto p
                  JOIN marca m ON p.marca_id = m.id
                  JOIN categoria c ON p.categoria_id = c.id
+                 WHERE p.activo = 1
                  ORDER BY p.creado_el DESC
                  LIMIT ?"
             );
@@ -372,7 +392,7 @@ class ProductoService
              FROM producto p
              JOIN marca m ON p.marca_id = m.id
              JOIN categoria c ON p.categoria_id = c.id
-             WHERE EXISTS (
+             WHERE p.activo = 1 AND EXISTS (
                  SELECT 1 FROM producto_etiqueta pe
                  WHERE pe.producto_id = p.id AND pe.etiqueta_id = ?
              )"
@@ -385,6 +405,11 @@ class ProductoService
     {
         $where  = [];
         $values = [];
+
+        if (isset($params['activo'])) {
+            $where[]  = 'p.activo = ?';
+            $values[] = (int) $params['activo'];
+        }
 
         if (!empty($params['nombre'])) {
             $where[]  = 'p.nombre LIKE ?';

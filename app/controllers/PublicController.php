@@ -21,6 +21,7 @@ class PublicController
             'precio_max'  => isset($req->query['precio_max']) && $req->query['precio_max'] !== '' ? (float) $req->query['precio_max'] : null,
             'marca_id'    => isset($req->query['marca_id']) && $req->query['marca_id'] !== '' ? (int) $req->query['marca_id'] : null,
             'etiquetas'   => $etiquetas,
+            'activo'      => 1,
         ];
 
         $service = new ProductoService();

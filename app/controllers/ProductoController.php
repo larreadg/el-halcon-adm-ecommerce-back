@@ -108,6 +108,22 @@ class ProductoController
         }
     }
 
+    public function toggleActivo(int $id): void
+    {
+        $service = new ProductoService();
+        $userId  = (int) Flight::get('user_id');
+
+        $producto = $service->toggleActivo($id, $userId);
+
+        if (!$producto) {
+            ApiResponse::error('Producto no encontrado', 404)->send();
+            return;
+        }
+
+        $estado = $producto['activo'] ? 'activado' : 'desactivado';
+        ApiResponse::success("Producto {$estado} correctamente", $producto)->send();
+    }
+
     public function destroy(int $id): void
     {
         $service  = new ProductoService();
