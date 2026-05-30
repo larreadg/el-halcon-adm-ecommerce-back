@@ -171,6 +171,7 @@ CREATE TABLE banner (
     nombre         TEXT NOT NULL,
     descripcion    TEXT,
     imagen         TEXT,
+    imagen_mobile  TEXT,
     fecha_desde    TEXT NOT NULL,
     fecha_hasta    TEXT NOT NULL,
     creado_por     INTEGER,

@@ -21,21 +21,23 @@ class ProductoService
         $whereClause = $where ? ('WHERE ' . implode(' AND ', $where)) : '';
 
         $countStmt = $this->db->prepare(
-            "SELECT COUNT(*) FROM producto p
-             JOIN marca m ON p.marca_id = m.id
-             JOIN categoria c ON p.categoria_id = c.id
+            "SELECT COUNT(*) " . $this->productoBaseFromClause() . "
              {$whereClause}"
         );
         $countStmt->execute($values);
         $total = (int) $countStmt->fetchColumn();
 
+        $orderBy = match($params['orden'] ?? null) {
+            'precio_asc'  => 'p.precio ASC, p.nombre ASC',
+            'precio_desc' => 'p.precio DESC, p.nombre ASC',
+            default       => 'p.nombre ASC',
+        };
+
         $stmt = $this->db->prepare(
-            "SELECT p.*, m.nombre AS marca_nombre, c.nombre AS categoria_nombre
-             FROM producto p
-             JOIN marca m ON p.marca_id = m.id
-             JOIN categoria c ON p.categoria_id = c.id
+            "SELECT " . $this->productoSelectClause() . '
+             ' . $this->productoBaseFromClause() . "
              {$whereClause}
-             ORDER BY p.nombre
+             ORDER BY {$orderBy}
              LIMIT ? OFFSET ?"
         );
         $stmt->execute([...$values, $perPage, $offset]);
@@ -114,10 +116,8 @@ class ProductoService
         $params[] = $limit;
 
         $stmt = $this->db->prepare(
-            "SELECT p.*, m.nombre AS marca_nombre, c.nombre AS categoria_nombre
-             FROM producto p
-             JOIN marca m ON p.marca_id = m.id
-             JOIN categoria c ON p.categoria_id = c.id
+            "SELECT " . $this->productoSelectClause() . '
+             ' . $this->productoBaseFromClause() . "
              WHERE p.activo = 1 AND (" . implode(' OR ', $parts) . ")
              ORDER BY p.id DESC
              LIMIT ?"
@@ -151,7 +151,7 @@ class ProductoService
         if (count($productos) < $minItems) {
             $excluirIds = array_column($productos, 'id');
             $recientes  = $this->fetchRecientes($minItems - count($productos), $excluirIds);
-            $productos  = array_merge($productos, $recientes);
+            $productos  = [...$productos, ...$recientes];
         }
 
         if (!empty($productos)) {
@@ -174,11 +174,32 @@ class ProductoService
     public function findById(int $id): ?array
     {
         $stmt = $this->db->prepare(
-            'SELECT p.*, m.nombre AS marca_nombre, c.nombre AS categoria_nombre
-             FROM producto p
-             JOIN marca m ON p.marca_id = m.id
-             JOIN categoria c ON p.categoria_id = c.id
+            'SELECT ' . $this->productoSelectClause() . '
+             ' . $this->productoBaseFromClause() . '
              WHERE p.id = ?'
+        );
+        $stmt->execute([$id]);
+        $row = $stmt->fetch();
+
+        if (!$row) {
+            return null;
+        }
+
+        $row['imagenes']  = $this->fetchImagenesByIds([$id])[$id] ?? [];
+        $row['etiquetas'] = $this->fetchEtiquetasByIds([$id])[$id] ?? [];
+
+        $rows = [&$row];
+        $this->attachDescuentos($rows);
+
+        return $row;
+    }
+
+    public function findPublicById(int $id): ?array
+    {
+        $stmt = $this->db->prepare(
+            'SELECT ' . $this->productoSelectClause() . '
+             ' . $this->productoBaseFromClause() . '
+             WHERE p.id = ? AND p.activo = 1'
         );
         $stmt->execute([$id]);
         $row = $stmt->fetch();
@@ -350,10 +371,8 @@ class ProductoService
         if (!empty($excluirIds)) {
             $placeholders = implode(',', array_fill(0, count($excluirIds), '?'));
             $stmt = $this->db->prepare(
-                "SELECT p.*, m.nombre AS marca_nombre, c.nombre AS categoria_nombre
-                 FROM producto p
-                 JOIN marca m ON p.marca_id = m.id
-                 JOIN categoria c ON p.categoria_id = c.id
+                "SELECT " . $this->productoSelectClause() . '
+                 ' . $this->productoBaseFromClause() . "
                  WHERE p.activo = 1 AND p.id NOT IN ($placeholders)
                  ORDER BY p.creado_el DESC
                  LIMIT ?"
@@ -361,10 +380,8 @@ class ProductoService
             $stmt->execute([...$excluirIds, $limit]);
         } else {
             $stmt = $this->db->prepare(
-                "SELECT p.*, m.nombre AS marca_nombre, c.nombre AS categoria_nombre
-                 FROM producto p
-                 JOIN marca m ON p.marca_id = m.id
-                 JOIN categoria c ON p.categoria_id = c.id
+                "SELECT " . $this->productoSelectClause() . '
+                 ' . $this->productoBaseFromClause() . "
                  WHERE p.activo = 1
                  ORDER BY p.creado_el DESC
                  LIMIT ?"
@@ -388,10 +405,8 @@ class ProductoService
         }
 
         $stmt = $this->db->prepare(
-            "SELECT p.*, m.nombre AS marca_nombre, c.nombre AS categoria_nombre
-             FROM producto p
-             JOIN marca m ON p.marca_id = m.id
-             JOIN categoria c ON p.categoria_id = c.id
+            "SELECT " . $this->productoSelectClause() . '
+             ' . $this->productoBaseFromClause() . "
              WHERE p.activo = 1 AND EXISTS (
                  SELECT 1 FROM producto_etiqueta pe
                  WHERE pe.producto_id = p.id AND pe.etiqueta_id = ?
@@ -411,6 +426,14 @@ class ProductoService
             $values[] = (int) $params['activo'];
         }
 
+        // Búsqueda combinada nombre+descripción (ecommerce público)
+        if (!empty($params['q'])) {
+            $where[]  = '(p.nombre LIKE ? OR p.descripcion LIKE ?)';
+            $values[] = '%' . $params['q'] . '%';
+            $values[] = '%' . $params['q'] . '%';
+        }
+
+        // Filtros individuales (admin)
         if (!empty($params['nombre'])) {
             $where[]  = 'p.nombre LIKE ?';
             $values[] = '%' . $params['nombre'] . '%';
@@ -423,31 +446,66 @@ class ProductoService
             $where[]  = 'p.descripcion LIKE ?';
             $values[] = '%' . $params['descripcion'] . '%';
         }
-        if ($params['precio_min'] !== null) {
+        if (!empty($params['precio_min'])) {
             $where[]  = 'p.precio >= ?';
             $values[] = $params['precio_min'];
         }
-        if ($params['precio_max'] !== null) {
+        if (!empty($params['precio_max'])) {
             $where[]  = 'p.precio <= ?';
             $values[] = $params['precio_max'];
         }
-        if ($params['marca_id'] !== null) {
+
+        // Marca: ID único (admin) o array de IDs (ecommerce)
+        if (!empty($params['marcas'])) {
+            $phs     = implode(',', array_fill(0, count($params['marcas']), '?'));
+            $where[] = "p.marca_id IN ({$phs})";
+            foreach ($params['marcas'] as $mid) {
+                $values[] = $mid;
+            }
+        } elseif (!empty($params['marca_id'])) {
             $where[]  = 'p.marca_id = ?';
             $values[] = $params['marca_id'];
         }
-        if ($params['categoria_id'] !== null) {
+
+        // Categoría: ID único (admin) o array de IDs (ecommerce)
+        if (!empty($params['categorias'])) {
+            $phs     = implode(',', array_fill(0, count($params['categorias']), '?'));
+            $where[] = "p.categoria_id IN ({$phs})";
+            foreach ($params['categorias'] as $cid) {
+                $values[] = $cid;
+            }
+        } elseif (!empty($params['categoria_id'])) {
             $where[]  = 'p.categoria_id = ?';
             $values[] = $params['categoria_id'];
         }
+
         if (!empty($params['etiquetas'])) {
-            $placeholders = implode(',', array_fill(0, count($params['etiquetas']), '?'));
-            $where[]  = "EXISTS (SELECT 1 FROM producto_etiqueta pe WHERE pe.producto_id = p.id AND pe.etiqueta_id IN ({$placeholders}))";
+            $phs     = implode(',', array_fill(0, count($params['etiquetas']), '?'));
+            $where[] = "EXISTS (SELECT 1 FROM producto_etiqueta pe WHERE pe.producto_id = p.id AND pe.etiqueta_id IN ({$phs}))";
             foreach ($params['etiquetas'] as $eid) {
                 $values[] = $eid;
             }
         }
 
         return [$where, $values];
+    }
+
+    private function productoSelectClause(): string
+    {
+        return 'p.*,
+            m.nombre AS marca_nombre,
+            m.imagen AS marca_imagen,
+            c.nombre AS categoria_nombre,
+            c.padre_id AS categoria_padre_id,
+            cp.nombre AS categoria_padre_nombre';
+    }
+
+    private function productoBaseFromClause(): string
+    {
+        return 'FROM producto p
+            JOIN marca m ON p.marca_id = m.id
+            JOIN categoria c ON p.categoria_id = c.id
+            LEFT JOIN categoria cp ON c.padre_id = cp.id';
     }
 
     private function fetchImagenesByIds(array $ids): array

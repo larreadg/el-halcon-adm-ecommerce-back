@@ -4,9 +4,11 @@ declare(strict_types=1);
 
 class BannerController
 {
-    private const MAX_SIDE_BANNER   = 2100;
-    private const BANNER_WIDTH      = 2100;
+    private const MAX_SIDE_BANNER   = 1920;
+    private const BANNER_WIDTH      = 1920;
     private const BANNER_HEIGHT     = 600;
+    private const MOBILE_WIDTH      = 750;
+    private const MOBILE_HEIGHT     = 500;
 
     public function index(): void
     {
@@ -37,28 +39,50 @@ class BannerController
             return;
         }
 
-        $file = ImageHelper::fromRequest();
+        $file       = ImageHelper::fromRequest('imagen');
+        $fileMobile = ImageHelper::fromRequest('imagen_mobile');
 
         if (!$file) {
-            ApiResponse::error('La imagen es requerida', 400)->send();
+            ApiResponse::error('La imagen de escritorio es requerida (1920x600)', 400)->send();
+            return;
+        }
+
+        if (!$fileMobile) {
+            ApiResponse::error('La imagen móvil es requerida (750x500)', 400)->send();
             return;
         }
 
         if (!ImageHelper::validateDimensions($file, self::BANNER_WIDTH, self::BANNER_HEIGHT)) {
-            ApiResponse::error('La imagen debe ser de ' . self::BANNER_WIDTH . 'x' . self::BANNER_HEIGHT . ' px', 422)->send();
+            ApiResponse::error('La imagen de escritorio debe ser de ' . self::BANNER_WIDTH . 'x' . self::BANNER_HEIGHT . ' px', 422)->send();
+            return;
+        }
+
+        if (!ImageHelper::validateDimensions($fileMobile, self::MOBILE_WIDTH, self::MOBILE_HEIGHT)) {
+            ApiResponse::error('La imagen móvil debe ser de ' . self::MOBILE_WIDTH . 'x' . self::MOBILE_HEIGHT . ' px', 422)->send();
             return;
         }
 
         $stored = ImageHelper::store($file, 'banners', self::MAX_SIDE_BANNER);
 
         if (!$stored) {
-            ApiResponse::error('Error al procesar la imagen', 500)->send();
+            ApiResponse::error('Error al procesar la imagen de escritorio', 500)->send();
+            return;
+        }
+
+        $storedMobile = ImageHelper::store($fileMobile, 'banners', self::MOBILE_WIDTH);
+
+        if (!$storedMobile) {
+            ImageHelper::cleanup($stored);
+            ApiResponse::error('Error al procesar la imagen móvil', 500)->send();
             return;
         }
 
         $service = new BannerService();
         $userId  = (int) Flight::get('user_id');
-        $banner  = $service->create(array_merge($data, ['imagen' => $stored['relative_path']]), $userId);
+        $banner  = $service->create(array_merge($data, [
+            'imagen'        => $stored['relative_path'],
+            'imagen_mobile' => $storedMobile['relative_path'],
+        ]), $userId);
 
         ApiResponse::success('Banner creado', $banner, 201)->send();
     }
@@ -82,34 +106,60 @@ class BannerController
             return;
         }
 
-        $file        = ImageHelper::fromRequest();
-        $storedImage = null;
+        $file         = ImageHelper::fromRequest('imagen');
+        $fileMobile   = ImageHelper::fromRequest('imagen_mobile');
+        $storedImage  = null;
+        $storedMobile = null;
 
         if ($file) {
             if (!ImageHelper::validateDimensions($file, self::BANNER_WIDTH, self::BANNER_HEIGHT)) {
-                ApiResponse::error('La imagen debe ser de ' . self::BANNER_WIDTH . 'x' . self::BANNER_HEIGHT . ' px', 422)->send();
+                ApiResponse::error('La imagen de escritorio debe ser de ' . self::BANNER_WIDTH . 'x' . self::BANNER_HEIGHT . ' px', 422)->send();
                 return;
             }
 
             $storedImage = ImageHelper::store($file, 'banners', self::MAX_SIDE_BANNER);
 
             if (!$storedImage) {
-                ApiResponse::error('Error al procesar la imagen', 500)->send();
+                ApiResponse::error('Error al procesar la imagen de escritorio', 500)->send();
                 return;
             }
         }
 
-        $updateData = $storedImage ? array_merge($data, ['imagen' => $storedImage['relative_path']]) : $data;
-        $banner     = $service->update($id, $updateData, $userId, $storedImage !== null);
+        if ($fileMobile) {
+            if (!ImageHelper::validateDimensions($fileMobile, self::MOBILE_WIDTH, self::MOBILE_HEIGHT)) {
+                ImageHelper::cleanup($storedImage);
+                ApiResponse::error('La imagen movil debe ser de ' . self::MOBILE_WIDTH . 'x' . self::MOBILE_HEIGHT . ' px', 422)->send();
+                return;
+            }
+
+            $storedMobile = ImageHelper::store($fileMobile, 'banners', self::MOBILE_WIDTH);
+
+            if (!$storedMobile) {
+                ImageHelper::cleanup($storedImage);
+                ApiResponse::error('Error al procesar la imagen movil', 500)->send();
+                return;
+            }
+        }
+
+        $updateData                  = $data;
+        $updateData['imagen']        = $storedImage  ? $storedImage['relative_path']  : $bannerActual['imagen'];
+        $updateData['imagen_mobile'] = $storedMobile ? $storedMobile['relative_path'] : $bannerActual['imagen_mobile'];
+
+        $banner = $service->update($id, $updateData, $userId);
 
         if (!$banner) {
             ImageHelper::cleanup($storedImage);
+            ImageHelper::cleanup($storedMobile);
             ApiResponse::error('Banner no encontrado', 404)->send();
             return;
         }
 
         if ($storedImage && $bannerActual['imagen']) {
             ImageHelper::delete($bannerActual['imagen']);
+        }
+
+        if ($storedMobile && $bannerActual['imagen_mobile']) {
+            ImageHelper::delete($bannerActual['imagen_mobile']);
         }
 
         ApiResponse::success('Banner actualizado', $banner)->send();
@@ -129,6 +179,10 @@ class BannerController
 
         if ($banner['imagen']) {
             ImageHelper::delete($banner['imagen']);
+        }
+
+        if ($banner['imagen_mobile']) {
+            ImageHelper::delete($banner['imagen_mobile']);
         }
 
         ApiResponse::success('Banner eliminado')->send();

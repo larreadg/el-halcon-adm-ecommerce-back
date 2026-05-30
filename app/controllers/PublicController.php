@@ -4,28 +4,59 @@ declare(strict_types=1);
 
 class PublicController
 {
+    public function productoDetalle(int $id): void
+    {
+        $service  = new ProductoService();
+        $producto = $service->findPublicById($id);
+
+        if (!$producto) {
+            ApiResponse::error('Producto no encontrado', 404)->send();
+            return;
+        }
+
+        ApiResponse::success('Producto obtenido', $producto)->send();
+    }
+
     public function productos(): void
     {
-        $req       = Flight::request();
+        $req = Flight::request();
+
+        $marcas    = isset($_GET['marca'])
+            ? array_values(array_filter(array_map('intval', (array) $_GET['marca'])))
+            : [];
+        $tipos     = isset($_GET['tipos'])
+            ? array_values(array_filter(array_map('intval', (array) $_GET['tipos'])))
+            : [];
         $etiquetas = isset($_GET['etiquetas'])
             ? array_values(array_filter(array_map('intval', (array) $_GET['etiquetas'])))
             : [];
 
         $filtros = [
-            'page'        => max(1, (int) ($req->query['page'] ?? 1)),
-            'per_page'    => min(100, max(1, (int) ($req->query['per_page'] ?? 10))),
-            'nombre'      => ($req->query['nombre'] ?? '') ?: null,
-            'codigo'      => ($req->query['codigo'] ?? '') ?: null,
-            'descripcion' => ($req->query['descripcion'] ?? '') ?: null,
-            'precio_min'  => isset($req->query['precio_min']) && $req->query['precio_min'] !== '' ? (float) $req->query['precio_min'] : null,
-            'precio_max'  => isset($req->query['precio_max']) && $req->query['precio_max'] !== '' ? (float) $req->query['precio_max'] : null,
-            'marca_id'    => isset($req->query['marca_id']) && $req->query['marca_id'] !== '' ? (int) $req->query['marca_id'] : null,
-            'etiquetas'   => $etiquetas,
-            'activo'      => 1,
+            'page'      => max(1, (int) ($req->query['page'] ?? 1)),
+            'per_page'  => min(100, max(1, (int) ($req->query['per_page'] ?? 10))),
+            'q'         => ($req->query['q'] ?? '') ?: null,
+            'marcas'    => $marcas,
+            'categorias' => $tipos,
+            'etiquetas' => $etiquetas,
+            'orden'     => ($req->query['orden'] ?? '') ?: null,
+            'activo'    => 1,
         ];
 
         $service = new ProductoService();
         ApiResponse::success('Listado obtenido', $service->findAll($filtros))->send();
+    }
+
+    public function filtros(): void
+    {
+        $marcas     = new MarcaService();
+        $categorias = new CategoriaService();
+        $etiquetas  = new EtiquetaService();
+
+        ApiResponse::success('Filtros obtenidos', [
+            'marcas'     => $marcas->findAll(),
+            'categorias' => $categorias->findAll(),
+            'etiquetas'  => $etiquetas->findAll(),
+        ])->send();
     }
 
     public function marcas(): void

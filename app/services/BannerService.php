@@ -28,13 +28,14 @@ class BannerService
     public function create(array $data, int $userId): array
     {
         $stmt = $this->db->prepare(
-            'INSERT INTO banner (nombre, descripcion, imagen, fecha_desde, fecha_hasta, creado_por, creado_el)
-             VALUES (?, ?, ?, ?, ?, ?, ?)'
+            'INSERT INTO banner (nombre, descripcion, imagen, imagen_mobile, fecha_desde, fecha_hasta, creado_por, creado_el)
+             VALUES (?, ?, ?, ?, ?, ?, ?, ?)'
         );
         $stmt->execute([
             $data['nombre'],
-            $data['descripcion'] ?? null,
-            $data['imagen']      ?? null,
+            $data['descripcion']   ?? null,
+            $data['imagen']        ?? null,
+            $data['imagen_mobile'] ?? null,
             $data['fecha_desde'],
             $data['fecha_hasta'],
             $userId,
@@ -43,48 +44,29 @@ class BannerService
         return $this->findById((int) $this->db->lastInsertId());
     }
 
-    public function update(int $id, array $data, int $userId, bool $replaceImagen = false): ?array
+    public function update(int $id, array $data, int $userId): ?array
     {
         if (!$this->findById($id)) {
             return null;
         }
 
-        $ahora = $this->now();
-
-        if ($replaceImagen) {
-            $stmt = $this->db->prepare(
-                'UPDATE banner
-                 SET nombre = ?, descripcion = ?, imagen = ?, fecha_desde = ?, fecha_hasta = ?,
-                     modificado_por = ?, modificado_el = ?
-                 WHERE id = ?'
-            );
-            $stmt->execute([
-                $data['nombre'],
-                $data['descripcion'] ?? null,
-                $data['imagen']      ?? null,
-                $data['fecha_desde'],
-                $data['fecha_hasta'],
-                $userId,
-                $ahora,
-                $id,
-            ]);
-        } else {
-            $stmt = $this->db->prepare(
-                'UPDATE banner
-                 SET nombre = ?, descripcion = ?, fecha_desde = ?, fecha_hasta = ?,
-                     modificado_por = ?, modificado_el = ?
-                 WHERE id = ?'
-            );
-            $stmt->execute([
-                $data['nombre'],
-                $data['descripcion'] ?? null,
-                $data['fecha_desde'],
-                $data['fecha_hasta'],
-                $userId,
-                $ahora,
-                $id,
-            ]);
-        }
+        $stmt = $this->db->prepare(
+            'UPDATE banner
+             SET nombre = ?, descripcion = ?, imagen = ?, imagen_mobile = ?, fecha_desde = ?, fecha_hasta = ?,
+                 modificado_por = ?, modificado_el = ?
+             WHERE id = ?'
+        );
+        $stmt->execute([
+            $data['nombre'],
+            $data['descripcion']   ?? null,
+            $data['imagen']        ?? null,
+            $data['imagen_mobile'] ?? null,
+            $data['fecha_desde'],
+            $data['fecha_hasta'],
+            $userId,
+            $this->now(),
+            $id,
+        ]);
 
         return $this->findById($id);
     }

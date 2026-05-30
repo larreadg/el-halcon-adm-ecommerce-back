@@ -8,6 +8,8 @@ declare(strict_types=1);
 Flight::route('GET /api/auth/captcha',  [AuthController::class, 'captcha']);
 Flight::route('POST /api/auth/login',   [AuthController::class, 'login']);
 Flight::route('GET /api/public/productos',  [PublicController::class, 'productos']);
+Flight::route('GET /api/public/productos/@id:[0-9]+', [PublicController::class, 'productoDetalle']);
+Flight::route('GET /api/public/filtros',    [PublicController::class, 'filtros']);
 Flight::route('GET /api/public/marcas',     [PublicController::class, 'marcas']);
 Flight::route('GET /api/public/etiquetas',  [PublicController::class, 'etiquetas']);
 Flight::route('GET /api/public/categorias', [PublicController::class, 'categorias']);
